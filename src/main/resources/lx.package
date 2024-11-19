@@ -1,0 +1,5 @@
+{
+  name: "SVG Import",
+  mediaDir: "SVG",
+  author: "Justin Belcher"
+}
