@@ -1,8 +1,19 @@
-# SVG Import Plugin
+# SVG Import Plugin for Chromatik
 
-This is a plugin for [Chromatik](https://chromatik.co/).  It can be used to convert an SVG file containing `path` elements to a Chromatik fixture file.
+This is a plugin for [Chromatik lighting workstation](https://chromatik.co/).  It will import SVG files created with CAD or vector graphics software such as Autodesk Fusion 360 or Adobe Illustrator.
 
 **BY DOWNLOADING OR USING THE LX SOFTWARE OR ANY PART THEREOF, YOU AGREE TO THE TERMS AND CONDITIONS OF THE [CHROMATIK / LX SOFTWARE LICENSE AND DISTRIBUTION AGREEMENT](http://chromatik.co/license/).**
+
+## Features
+
+- Load an SVG file and convert the `path` elements into Chromatik fixtures
+- Scale the fixtures by adjusting Units on the path and the model
+- Create points along each path using a fixed spacing (number of points will be calculated) or by specifying the total number points (spacing will be calculated)
+- Add padding to the start and end of each path to adjust for real-world placement
+- Fine tune the Path Fixtures individually or all at once using Global parameters
+- Export individual fixtures to LXF fixture files
+- Export all fixtures at once with an optional parent LXF fixture to group them
+- Delete or deactivate fixtures to exclude them from export
 
 ## Installation
 
@@ -28,3 +39,7 @@ This is a plugin for [Chromatik](https://chromatik.co/).  It can be used to conv
 
 - Build with `mvn package`
 - Install via `mvn install`
+
+## See Also
+
+- [Shaper Utilities](https://apps.autodesk.com/FUSION/en/Detail/Index?id=3662665235866169729) Fusion 360 plugin for exporting SVG files
