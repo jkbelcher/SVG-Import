@@ -175,7 +175,9 @@ public class SvgImport extends LXComponent implements LXStructure.Listener, Json
 
   public void importSvg(File file) {
     if (this.clearExistingOnImport.getValueb()) {
-      removeFixtures(this.fixtures);
+      for (int i = this.fixtures.size() - 1; i >= 0; i--) {
+        removeFixture(this.fixtures.get(i));
+      }
     }
     this.numPaths.reset();
     List<String> paths;
