@@ -63,6 +63,9 @@ public class SvgImport extends LXComponent implements LXStructure.Listener, Json
   public final SyncParameter syncModelUnits;
   public final SyncParameter syncPointMode;
   public final SyncParameter syncSpacing;
+  public final SyncParameter syncSpacingUnits;
+  public final SyncParameter syncDensity;
+  public final SyncParameter syncDensityUnits;
   public final SyncParameter syncNumPoints;
   public final SyncParameter syncReversePath;
   public final SyncParameter syncPadStart;
@@ -100,6 +103,12 @@ public class SvgImport extends LXComponent implements LXStructure.Listener, Json
       this.syncPointMode = new SyncParameter(lx, PathFixture.newPointMode()));
     addChild("syncSpacing",
       this.syncSpacing = new SyncParameter(lx, PathFixture.newSpacing()));
+    addChild("syncSpacingUnits",
+      this.syncSpacingUnits = new SyncParameter(lx, PathFixture.newSpacingUnits()));
+    addChild("syncDensity",
+      this.syncDensity = new SyncParameter(lx, PathFixture.newDensity()));
+    addChild("syncDensityUnits",
+      this.syncDensityUnits = new SyncParameter(lx, PathFixture.newDensityUnits()));
     addChild("syncNumPoints",
       this.syncNumPoints = new SyncParameter(lx, PathFixture.newNumPoints()));
     addChild("syncReversePath",
@@ -129,6 +138,9 @@ public class SvgImport extends LXComponent implements LXStructure.Listener, Json
     this.syncPointMode.addChildParameter(fixture.pointMode);
     this.syncNumPoints.addChildParameter(fixture.numPoints);
     this.syncSpacing.addChildParameter(fixture.spacing);
+    this.syncSpacingUnits.addChildParameter(fixture.spacingUnits);
+    this.syncDensity.addChildParameter(fixture.density);
+    this.syncDensityUnits.addChildParameter(fixture.densityUnits);
     this.syncReversePath.addChildParameter(fixture.reversePath);
     this.syncPadStart.addChildParameter(fixture.padStart);
     this.syncPadEnd.addChildParameter(fixture.padEnd);
@@ -163,6 +175,9 @@ public class SvgImport extends LXComponent implements LXStructure.Listener, Json
       this.syncPointMode.removeChildParameter(pathFixture.pointMode);
       this.syncNumPoints.removeChildParameter(pathFixture.numPoints);
       this.syncSpacing.removeChildParameter(pathFixture.spacing);
+      this.syncSpacingUnits.removeChildParameter(pathFixture.spacingUnits);
+      this.syncDensity.removeChildParameter(pathFixture.density);
+      this.syncDensityUnits.removeChildParameter(pathFixture.densityUnits);
       this.syncReversePath.removeChildParameter(pathFixture.reversePath);
       this.syncPadStart.removeChildParameter(pathFixture.padStart);
       this.syncPadEnd.removeChildParameter(pathFixture.padEnd);

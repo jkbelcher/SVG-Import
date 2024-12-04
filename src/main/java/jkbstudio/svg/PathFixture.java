@@ -22,6 +22,7 @@ import heronarts.lx.structure.LXBasicFixture;
 import heronarts.lx.transform.LXMatrix;
 import heronarts.lx.utils.LXUtils;
 import jkbstudio.DistanceUnits;
+import jkbstudio.Format;
 import jkbstudio.structure.JsonKeys;
 
 import java.awt.geom.Path2D;
@@ -43,9 +44,10 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
   public static final int MAX_POINTS = 4096;
 
   public enum PointMode {
-    NUMPOINTS("NumPoints"),
+    DIRECT("Direct"),
+    DENSITY("Density"),
     SPACING("Spacing"),
-    DIRECT("Direct");
+    NUMPOINTS("NumPoints");
 
     public final String label;
 
@@ -83,8 +85,28 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
   }
 
   public static BoundedParameter newSpacing() {
-    return new BoundedParameter("Spacing", 1, 0.1, 1000000)
-      .setDescription("Spacing between points, when using Spacing mode");
+    return new BoundedParameter("Spacing", 1, 0.1, 1000)
+      .setDescription("Spacing between points, when using Spacing mode")
+      .setFormatter(Format.DECIMAL_CLEAN);
+  }
+
+  public static EnumParameter<DistanceUnits> newSpacingUnits() {
+    return (EnumParameter<DistanceUnits>)
+      new EnumParameter<>("Spacing Units", DistanceUnits.INCHES)
+      .setDescription("Units for Spacing mode");
+  }
+
+  public static BoundedParameter newDensity() {
+    return new BoundedParameter("Density", 60, 0.1, 1000)
+      .setDescription("Number of points per [unit], when using Density mode")
+      .setFormatter(Format.DECIMAL_CLEAN);
+  }
+
+  public static EnumParameter<DistanceUnits> newDensityUnits() {
+    return (EnumParameter<DistanceUnits>)
+      new EnumParameter<>("Density Units", DistanceUnits.METERS)
+      .setDescription("In Density mode, the number of points is per each of these units")
+      .setOptions(DistanceUnits.getOptionsSingular());
   }
 
   public static BooleanParameter newReversePath() {
@@ -94,12 +116,14 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
 
   public static BoundedParameter newPadStart() {
     return new BoundedParameter("PadStart", 0, 0, 10000)
-      .setDescription("Distance between path start and first pixel");
+      .setDescription("Distance between path start and first pixel")
+      .setFormatter(Format.DECIMAL_CLEAN);
   }
 
   public static BoundedParameter newPadEnd() {
     return new BoundedParameter("PadEnd", 0, 0, 10000)
-      .setDescription("Distance between last pixel and path end");
+      .setDescription("Distance between last pixel and path end")
+      .setFormatter(Format.DECIMAL_CLEAN);
   }
 
   public final EnumParameter<DistanceUnits> pathUnits = newPathUnits();
@@ -111,6 +135,12 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
   public final DiscreteParameter numPoints = newNumPoints();
 
   public final BoundedParameter spacing = newSpacing();
+
+  public final EnumParameter<DistanceUnits> spacingUnits = newSpacingUnits();
+
+  public final BoundedParameter density = newDensity();
+
+  public final EnumParameter<DistanceUnits> densityUnits = newDensityUnits();
 
   public final BooleanParameter reversePath = newReversePath();
 
@@ -151,6 +181,9 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
     addMetricsParameter("pointMode", this.pointMode);
     addMetricsParameter("numPoints", this.numPoints);
     addMetricsParameter("spacing", this.spacing);
+    addMetricsParameter("spacingUnits", this.spacingUnits);
+    addMetricsParameter("density", this.density);
+    addMetricsParameter("densityUnits", this.densityUnits);
     addMetricsParameter("reversePath", this.reversePath);
     addMetricsParameter("padStart", this.padStart);
     addMetricsParameter("padEnd", this.padEnd);
@@ -167,6 +200,9 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
     metaData.put("pointMode", this.pointMode.getEnum().toString());
     metaData.put("numPoints", String.valueOf(this.numPoints.getValuei()));
     metaData.put("spacing", String.valueOf(this.spacing.getValue()));
+    metaData.put("spacingUnits", String.valueOf(this.spacingUnits.getEnum()));
+    metaData.put("density", String.valueOf(this.density.getValue()));
+    metaData.put("densityUnits", String.valueOf(this.densityUnits.getEnum()));
     metaData.put("reversePath", String.valueOf(this.reversePath.getValueb()));
     metaData.put("padStart", String.valueOf(this.padStart.getValue()));
     metaData.put("padEnd", String.valueOf(this.padEnd.getValue()));
@@ -185,7 +221,10 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
       rebuildCoordinates();
       refreshSizeForSpacing();
     } else if (this.pointMode.getEnum() == PointMode.SPACING &&
-      (p == this.pointMode || p == this.spacing || p == this.padStart || p == this.padEnd)) {
+      (p == this.pointMode || p == this.spacing || p == this.spacingUnits || p == this.padStart || p == this.padEnd)) {
+      refreshSizeForSpacing();
+    } else if (this.pointMode.getEnum() == PointMode.DENSITY &&
+      (p == this.pointMode || p == this.density || p == this.densityUnits || p == this.padStart || p == this.padEnd)) {
       refreshSizeForSpacing();
     }
     super.onParameterChanged(p);
@@ -261,17 +300,39 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
   }
 
   /**
+   * Returns distance between each point in model units, for Spacing and Density modes.
+   */
+  private double getModelSpacing() {
+    DistanceUnits modelUnits = this.modelUnits.getEnum();
+    if (this.pointMode.getEnum() == PointMode.DENSITY) {
+      // Density mode
+      double density = this.density.getValue();
+      double densitySpacing = density > 0 ? 1 / density : 0;
+      DistanceUnits densityUnits = this.densityUnits.getEnum();
+      return modelUnits.from(densityUnits, densitySpacing);
+    } else {
+      // Spacing mode
+      double spacing = this.spacing.getValue();
+      DistanceUnits spacingUnits = this.spacingUnits.getEnum();
+      return modelUnits.from(spacingUnits, spacing);
+    }
+  }
+
+  /**
    * Calculate number of points in fixture for Spacing mode
    */
   protected void refreshSizeForSpacing() {
-    double spacing = this.spacing.getValue();
-    if (spacing > 0) {
-      this.sizeForSpacingMode = (int) (getActiveLength() / spacing);
+    double modelSpacing = getModelSpacing();
+    if (modelSpacing > 0) {
+      this.sizeForSpacingMode = (int) (getActiveLength() / modelSpacing);
     } else {
       this.sizeForSpacingMode = 0;
     }
   }
 
+  /**
+   * Length of the coordinates path minus padding, in model units
+   */
   private double getActiveLength() {
     return LXUtils.max(0, this.coordsLength - this.padStart.getValue() - this.padEnd.getValue());
   }
@@ -285,8 +346,9 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
         final double spacing = spaces > 0 ? (activeLength / spaces) : 0;
         _computePointsOnPath(transform, points, spacing);
         break;
+      case DENSITY:
       case SPACING:
-        _computePointsOnPath(transform, points, this.spacing.getValue());
+        _computePointsOnPath(transform, points, getModelSpacing());
         break;
       case DIRECT:
       default:
@@ -369,6 +431,7 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
     switch (this.pointMode.getEnum()) {
       case NUMPOINTS:
         return this.numPoints.getValuei();
+      case DENSITY:
       case SPACING:
         // We updated this already from onParameterChanged()
         return this.sizeForSpacingMode;

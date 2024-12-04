@@ -42,6 +42,7 @@ public class UISvgImport extends UICollapsibleSection implements UIControls {
 
   private final UI2dComponent numPointsRow;
   private final UI2dComponent spacingRow;
+  private final UI2dComponent densityRow;
   private final UI2dComponent padEndRow;
 
   /**
@@ -96,7 +97,14 @@ public class UISvgImport extends UICollapsibleSection implements UIControls {
       newSyncParameterRow(ui, component.syncPathUnits),
       newSyncParameterRow(ui, component.syncModelUnits),
       newSyncParameterRow(ui, component.syncPointMode),
-      this.spacingRow = newSyncParameterRow(ui, component.syncSpacing),
+      this.spacingRow = UI2dContainer.newVerticalContainer(getContentWidth(), 4,
+        newSyncParameterRow(ui, component.syncSpacing),
+        newSyncParameterRow(ui, component.syncSpacingUnits)
+        ),
+      this.densityRow = UI2dContainer.newVerticalContainer(getContentWidth(), 4,
+        newSyncParameterRow(ui, component.syncDensity),
+        newSyncParameterRow(ui, component.syncDensityUnits)
+      ),
       this.numPointsRow = newSyncParameterRow(ui, component.syncNumPoints),
       newSyncParameterRow(ui, component.syncReversePath),
       newSyncParameterRow(ui, component.syncPadStart),
@@ -142,6 +150,7 @@ public class UISvgImport extends UICollapsibleSection implements UIControls {
         ((EnumParameter<PathFixture.PointMode>)component.syncPointMode.parameter).getEnum();
       this.numPointsRow.setVisible(pointMode == PathFixture.PointMode.NUMPOINTS);
       this.spacingRow.setVisible(pointMode == PathFixture.PointMode.SPACING);
+      this.densityRow.setVisible(pointMode == PathFixture.PointMode.DENSITY);
       this.padEndRow.setVisible(pointMode != PathFixture.PointMode.SPACING);
     }, true);
 

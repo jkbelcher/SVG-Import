@@ -33,6 +33,7 @@ public class UIPathFixture implements UIFixtureControls<PathFixture>, UIControls
   private UILabel pointCount;
   private UI2dComponent numPointsRow;
   private UI2dComponent spacingRow;
+  private UI2dComponent densityRow;
   private UI2dComponent padEndRow;
 
   @Override
@@ -55,7 +56,27 @@ public class UIPathFixture implements UIFixtureControls<PathFixture>, UIControls
     sectPoints.addChildren(
       newRow(fixture.pointMode, uiFixture.newControlDropMenu(fixture.pointMode, controlWidth)),
       this.numPointsRow = newRow(fixture.numPoints, uiFixture.newControlIntBox(fixture.numPoints, controlWidth)),
-      this.spacingRow = newRow(fixture.spacing, uiFixture.newControlBox(fixture.spacing, controlWidth)),
+      this.spacingRow =
+        UI2dContainer.newHorizontalContainer(ROW_HEIGHT, 2,
+          new UILabel(70, ROW_HEIGHT, fixture.spacing.getLabel())
+            .setFont(UI.get().theme.getControlFont())
+            .setTextAlignment(VGraphics.Align.LEFT, VGraphics.Align.MIDDLE),
+          uiFixture.newControlBox(fixture.spacing, 40),
+          newDropMenu(fixture.spacingUnits, 53)
+            .setMenuWidth(80)
+        ),
+      this.densityRow =
+        UI2dContainer.newHorizontalContainer(ROW_HEIGHT, 2,
+          new UILabel(50, ROW_HEIGHT, "Density")
+            .setFont(UI.get().theme.getControlFont())
+            .setTextAlignment(VGraphics.Align.LEFT, VGraphics.Align.MIDDLE),
+          uiFixture.newControlBox(fixture.density, 40),
+          new UILabel(20, ROW_HEIGHT, "per")
+            .setFont(UI.get().theme.getControlFont())
+            .setTextAlignment(VGraphics.Align.CENTER, VGraphics.Align.MIDDLE),
+          newDropMenu(fixture.densityUnits, 50)
+            .setMenuWidth(80)
+        ),
       newRow(fixture.reversePath, uiFixture.newControlButton(fixture.reversePath, controlWidth)),
       this.pointCount = (UILabel) new UILabel(sectPoints.getContentWidth(), ROW_HEIGHT, "")
         .setFont(ui.theme.getControlFont())
@@ -99,7 +120,7 @@ public class UIPathFixture implements UIFixtureControls<PathFixture>, UIControls
       PointMode pointMode = fixture.pointMode.getEnum();
       this.numPointsRow.setVisible(pointMode == PointMode.NUMPOINTS);
       this.spacingRow.setVisible(pointMode == PointMode.SPACING);
-      this.padEndRow.setVisible(pointMode != PointMode.SPACING);
+      this.densityRow.setVisible(pointMode == PointMode.DENSITY);
     }, true);
 
     uiFixture.addListener(fixture.size, p -> {
