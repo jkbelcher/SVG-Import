@@ -1,3 +1,9 @@
+/**
+ * Copyright 2024- Justin K. Belcher
+ *
+ * @author Justin K. Belcher <justin@jkb.studio>
+ */
+
 package jkbstudio.svg;
 
 import heronarts.lx.LX;
