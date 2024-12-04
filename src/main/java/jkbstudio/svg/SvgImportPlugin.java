@@ -12,6 +12,8 @@ import heronarts.lx.studio.LXStudio;
 import jkbstudio.ui.svg.UISvgImport;
 
 /**
+ * Chromatik plugin that adds an SVG Import component and associated UI element.
+ *
  * @author Justin Belcher <justin@jkb.studio>
  */
 @LXPlugin.Name("SVG Import")
