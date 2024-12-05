@@ -20,7 +20,7 @@ import jkbstudio.ui.svg.UISvgImport;
 public class SvgImportPlugin implements LXStudio.Plugin {
 
   // This string must be manually updated to match the pom.xml version
-  public static final String VERSION = "0.1.0-SNAPSHOT";
+  public static final String VERSION = "0.1.1-SNAPSHOT";
   private SvgImport svgImport;
 
   public SvgImportPlugin(LX lx) {
