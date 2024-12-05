@@ -509,6 +509,48 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
       coords.add(coord);
     }
 
+    // output
+    Protocol protocol = this.protocol.getEnum();
+    if (protocol != Protocol.NONE) {
+      JsonArray outputs = new JsonArray();
+      component.add(KEY_OUTPUTS, outputs);
+      JsonObject output = new JsonObject();
+      output.addProperty(KEY_PROTOCOL, getProtocolForLXF(this.protocol.getEnum()));
+      output.addProperty(KEY_ENABLED, true);
+      output.addProperty(KEY_BYTE_ORDER, this.byteOrder.getEnum().name());
+      output.addProperty(KEY_REVERSE, this.reverse.getValueb());
+      output.addProperty(KEY_HOST, this.host.getString());
+      switch (protocol) {
+        case ARTNET -> {
+          output.addProperty(KEY_UNIVERSE, this.artNetUniverse.getValuei());
+          output.addProperty(KEY_CHANNEL, this.dmxChannel.getValuei());
+          output.addProperty(KEY_SEQUENCE_ENABLED, this.artNetSequenceEnabled.getValueb());
+        }
+        case SACN -> {
+          output.addProperty(KEY_UNIVERSE, this.artNetUniverse.getValuei());
+          output.addProperty(KEY_CHANNEL, this.dmxChannel.getValuei());
+          if (!this.sacnPriority.isDefault()) {
+            output.addProperty(KEY_PRIORITY, this.sacnPriority.getValuei());
+          }
+        }
+        case OPC -> {
+          output.addProperty(KEY_TRANSPORT, this.transport.getEnum().name());
+          output.addProperty(KEY_PORT, this.port.getValuei());
+          output.addProperty(KEY_OPC_CHANNEL, this.opcChannel.getValuei());
+          output.addProperty(KEY_OFFSET, this.opcOffset.getValuei());
+        }
+        case DDP -> {
+          output.addProperty(KEY_DDP_DATA_OFFSET, this.ddpDataOffset.getValuei());
+        }
+        case KINET -> {
+          output.addProperty(KEY_KINET_VERSION, this.kinetVersion.getEnum().name());
+          output.addProperty(KEY_KINET_PORT, this.kinetPort.getValuei());
+          output.addProperty(KEY_CHANNEL, this.dmxChannel.getValuei());
+        }
+      }
+      outputs.add(output);
+    }
+
     try (JsonWriter writer = new JsonWriter(new FileWriter(file))) {
       writer.setIndent("  ");
       new GsonBuilder().create().toJson(obj, writer);
@@ -518,6 +560,35 @@ public class PathFixture extends LXBasicFixture implements JsonKeys {
       LX.error(iox, "Exception writing fixture file to " + file);
       return null;
     }
+  }
+
+  /**
+   * Get an LXF-compatible value for the output.protocol property.
+   * Currently these definitions only exist in the private enum JsonFixture.JsonProtocolDefinition
+   */
+  private static String getProtocolForLXF(Protocol protocol) {
+    // JSON protocol keys are defined
+    switch (protocol) {
+      case ARTNET -> {
+        return "artnet";
+      }
+      case SACN -> {
+        return "sacn";
+      }
+      case OPC -> {
+        return "opc";
+      }
+      case DDP -> {
+        return "ddp";
+      }
+      case KINET -> {
+        return "kinet";
+      }
+      case NONE -> {
+        return "";
+      }
+    }
+    return "";
   }
 
   public static String removeExtension(String filename) {
