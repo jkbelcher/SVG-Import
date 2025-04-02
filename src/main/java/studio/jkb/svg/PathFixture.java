@@ -4,7 +4,7 @@
  * @author Justin K. Belcher <justin@jkb.studio>
  */
 
-package jkbstudio.svg;
+package studio.jkb.svg;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -21,9 +21,9 @@ import heronarts.lx.parameter.MutableParameter;
 import heronarts.lx.structure.LXBasicFixture;
 import heronarts.lx.transform.LXMatrix;
 import heronarts.lx.utils.LXUtils;
-import jkbstudio.DistanceUnits;
-import jkbstudio.Format;
-import jkbstudio.structure.JsonKeys;
+import studio.jkb.DistanceUnits;
+import studio.jkb.Format;
+import studio.jkb.structure.JsonKeys;
 
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;

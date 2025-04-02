@@ -4,12 +4,11 @@
  * @author Justin K. Belcher <justin@jkb.studio>
  */
 
-package jkbstudio.svg;
+package studio.jkb.svg;
 
 import heronarts.lx.LX;
 import heronarts.lx.LXPlugin;
 import heronarts.lx.studio.LXStudio;
-import jkbstudio.ui.svg.UISvgImport;
 
 /**
  * Chromatik plugin that adds an SVG Import component and associated UI element.
@@ -20,7 +19,7 @@ import jkbstudio.ui.svg.UISvgImport;
 public class SvgImportPlugin implements LXStudio.Plugin {
 
   // This string must be manually updated to match the pom.xml version
-  public static final String VERSION = "0.1.1-SNAPSHOT";
+  public static final String VERSION = "0.1.2-SNAPSHOT";
   private SvgImport svgImport;
 
   public SvgImportPlugin(LX lx) {

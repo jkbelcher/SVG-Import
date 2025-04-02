@@ -4,7 +4,7 @@
  * @author Justin K. Belcher <justin@jkb.studio>
  */
 
-package jkbstudio.ui.svg;
+package studio.jkb.svg;
 
 import heronarts.glx.ui.UI;
 import heronarts.glx.ui.UI2dComponent;
@@ -18,8 +18,7 @@ import heronarts.lx.studio.LXStudio;
 import heronarts.lx.studio.ui.device.UIControls;
 import heronarts.lx.studio.ui.fixture.UIFixture;
 import heronarts.lx.studio.ui.fixture.UIFixtureControls;
-import jkbstudio.svg.PathFixture;
-import jkbstudio.svg.PathFixture.PointMode;
+import studio.jkb.svg.PathFixture.PointMode;
 
 import java.io.File;
 

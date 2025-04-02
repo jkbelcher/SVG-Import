@@ -4,7 +4,7 @@
  * @author Justin K. Belcher <justin@jkb.studio>
  */
 
-package jkbstudio;
+package studio.jkb;
 
 import java.util.Arrays;
 

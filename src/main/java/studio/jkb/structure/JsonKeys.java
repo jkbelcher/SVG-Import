@@ -18,7 +18,7 @@
  * @author Mark C. Slee <mark@heronarts.com>
  */
 
-package jkbstudio.structure;
+package studio.jkb.structure;
 
 /**
  * String keys that perhaps could be made public in JsonFixture

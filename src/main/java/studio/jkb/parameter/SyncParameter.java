@@ -4,7 +4,7 @@
  * @author Justin K. Belcher <justin@jkb.studio>
  */
 
-package jkbstudio.parameter;
+package studio.jkb.parameter;
 
 import heronarts.lx.LX;
 import heronarts.lx.LXComponent;

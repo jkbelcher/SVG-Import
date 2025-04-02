@@ -2,10 +2,22 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>jkbstudio</groupId>
+    <groupId>studio.jkb</groupId>
     <artifactId>SVG-Import</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+    <name>SVG Import</name>
+    <description>A Chromatik plugin that that imports SVG files, creates fixtures from SVG paths, and
+        * provides management across imported fixtures including parameter sync and group export.</description>
+    <url>https://github.com/jkbelcher/SVG-Import</url>
+    <inceptionYear>2024</inceptionYear>
+    <developers>
+        <developer>
+            <name>Justin K. Belcher</name>
+            <email>justin@jkb.studio</email>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
@@ -18,7 +30,6 @@
         <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
-        
     </properties>
     
     <dependencies>
@@ -73,6 +84,24 @@
                                     <directory>${project.build.directory}</directory>
                                     <include>${project.artifactId}-${project.version}.jar</include>
                                     <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>filter-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>lx.package</include>
+                                    </includes>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>

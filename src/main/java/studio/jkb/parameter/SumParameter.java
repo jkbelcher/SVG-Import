@@ -1,4 +1,4 @@
-package jkbstudio.parameter;
+package studio.jkb.parameter;
 
 import heronarts.lx.parameter.LXListenableParameter;
 import heronarts.lx.parameter.LXParameterListener;

@@ -4,7 +4,7 @@
  * @author Justin K. Belcher <justin@jkb.studio>
  */
 
-package jkbstudio.svg;
+package studio.jkb.svg;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -19,9 +19,9 @@ import heronarts.lx.parameter.StringParameter;
 import heronarts.lx.structure.LXFixture;
 import heronarts.lx.structure.LXStructure;
 import heronarts.lx.utils.LXUtils;
-import jkbstudio.parameter.SumParameter;
-import jkbstudio.parameter.SyncParameter;
-import jkbstudio.structure.JsonKeys;
+import studio.jkb.parameter.SumParameter;
+import studio.jkb.parameter.SyncParameter;
+import studio.jkb.structure.JsonKeys;
 
 import java.io.File;
 import java.io.FileWriter;

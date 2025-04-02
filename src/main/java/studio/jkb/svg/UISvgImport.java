@@ -4,7 +4,7 @@
  * @author Justin K. Belcher <justin@jkb.studio>
  */
 
-package jkbstudio.ui.svg;
+package studio.jkb.svg;
 
 import heronarts.glx.ui.UI;
 import heronarts.glx.ui.UI2dComponent;
@@ -22,9 +22,7 @@ import heronarts.lx.parameter.DiscreteParameter;
 import heronarts.lx.parameter.EnumParameter;
 import heronarts.lx.studio.LXStudio;
 import heronarts.lx.studio.ui.device.UIControls;
-import jkbstudio.parameter.SyncParameter;
-import jkbstudio.svg.PathFixture;
-import jkbstudio.svg.SvgImport;
+import studio.jkb.parameter.SyncParameter;
 
 import java.io.File;
 

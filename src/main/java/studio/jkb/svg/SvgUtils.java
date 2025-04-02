@@ -4,7 +4,7 @@
  * @author Justin K. Belcher <justin@jkb.studio>
  */
 
-package jkbstudio.svg;
+package studio.jkb.svg;
 
 import heronarts.lx.LX;
 import org.w3c.dom.Document;
